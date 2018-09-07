@@ -2,6 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC  -fshow-hole-constraints #-}
 
 -- + Complete the 10 exercises below by filling out the function bodies.
 --   Replace the function bodies (error "todo: ...") with an appropriate
@@ -92,8 +93,9 @@ headOr _ (x :. _)= x
 product ::
   List Int
   -> Int
-product =
-  error "todo: Course.List#product"
+product Nil = 1
+product (x :. xs) = x * product xs
+
 
 -- | Sum the elements of the list.
 --
@@ -107,8 +109,9 @@ product =
 sum ::
   List Int
   -> Int
-sum =
-  error "todo: Course.List#sum"
+sum Nil  = 0
+sum (x :. xs)  = x + sum xs
+
 
 -- | Return the length of the list.
 --
@@ -119,8 +122,9 @@ sum =
 length ::
   List a
   -> Int
-length =
-  error "todo: Course.List#length"
+length Nil = 0
+length (_ :. xs) = 1 + length xs
+
 
 -- | Map the given function on each element of the list.
 --
@@ -134,8 +138,9 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map =
-  error "todo: Course.List#map"
+map _ Nil = Nil
+map f (x :. xs) = f x :. map f xs
+
 
 -- | Return elements satisfying the given predicate.
 --
@@ -151,8 +156,12 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter =
-  error "todo: Course.List#filter"
+filter _ Nil = Nil
+filter f (x :. xs) =
+  if f x
+     then x :. filter f xs
+  else filter f xs
+
 
 -- | Append two lists to a new list.
 --
@@ -170,8 +179,11 @@ filter =
   List a
   -> List a
   -> List a
-(++) =
-  error "todo: Course.List#(++)"
+(++) Nil Nil = Nil
+(++) a Nil = a
+(++) Nil a = a
+(++) (a :. as) bs = a :. as ++ bs
+
 
 infixr 5 ++
 
